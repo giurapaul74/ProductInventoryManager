@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Product_Inventory_Manager
 {
-    public class Inventory
+    public class Inventory : IEnumerable<Product>
     {
         private Dictionary<int, Product> InventoryList { get; set; }
 
@@ -15,6 +17,13 @@ namespace Product_Inventory_Manager
         public void AddProduct(int id, Product product)
         {
             InventoryList.Add(id, product);
+        }
+
+        public IEnumerator<Product> GetEnumerator() => InventoryList.Select(c => c.Value).GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
