@@ -2,22 +2,22 @@
 {
     public class Product
     {
-        public string _name { get; set; }
-        public decimal _price { get; set; }
-        public int _id { get; set; }
-        public int _quantityOnHand { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public int Id { get; set; }
+        public int Quantity { get; set; }
 
-        public Product(string name, decimal price, int id, int quantityOnHand)
+        public Product(string name, decimal price, int id, int quantity)
         {
-            _name = name;
-            _price = price;
-            _id = id;
-            _quantityOnHand = quantityOnHand;
+            Name = name;
+            Price = price;
+            Id = id;
+            Quantity = quantity;
         }
 
         public override string ToString()
         {
-            return "Product ID #" + _id;
+            return $"Product {Id} : {Name} : {Price} dollars : {Quantity} item/s";
         }
     }
 }

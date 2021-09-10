@@ -19,6 +19,16 @@ namespace Product_Inventory_Manager
             InventoryList.Add(id, product);
         }
 
+        public void RemoveProduct(int id)
+        {
+            InventoryList.Remove(id);
+        }
+
+        public void SellProduct(int id, int quantity)
+        {
+            //InventoryList.Remove(id, out quantity);
+        }
+
         public IEnumerator<Product> GetEnumerator() => InventoryList.Select(c => c.Value).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
