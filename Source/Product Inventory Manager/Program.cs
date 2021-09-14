@@ -40,10 +40,14 @@ namespace Product_Inventory_Manager
                         {
                             Console.WriteLine(p);
                         }
-                        Console.WriteLine("Which product would you like to sell and how many units?");
+                        Console.WriteLine("Which product would you like to sell?");
                         var productId = Int32.Parse(Console.ReadLine());
-                        inventoryList.RemoveProduct(productId);
-                        Console.WriteLine("Selected Product has been sold.");
+                        //var productQuantity = Int32.Parse(Console.ReadLine());
+                        Console.WriteLine("How many units would you like to sell?");
+                        var quantityToSell = Int32.Parse(Console.ReadLine());
+                        inventoryList.SellProductQuantity(productId, quantityToSell);
+                        Console.WriteLine($"Sold {quantityToSell} items of type {product.Name}.");
+                        Console.WriteLine($"Quantity of product with the id of {productId} is {inventoryList.UpdateProductQuantity(product.Quantity)}.");
                         break;
                     //case "2":
                     //    Console.WriteLine("You have selected: Stock Product.");

@@ -7,6 +7,11 @@
         public int Id { get; set; }
         public int Quantity { get; set; }
 
+        public Product()
+        {
+
+        }
+
         public Product(string name, decimal price, int id, int quantity)
         {
             Name = name;
