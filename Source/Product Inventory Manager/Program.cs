@@ -6,18 +6,20 @@ namespace Product_Inventory_Manager
     {
         static void Main(string[] args)
         {
-            var inventoryList = new Inventory();
+
+            var inventoryList = _inventoryList;
+            //var prod = _product;
             var product = new Product("Stool", 65m, 1, 2);
             var product2 = new Product("Bench", 125m, 2, 3);
             var product3 = new Product("Wrench", 30m, 3, 5);
             var product4 = new Product("Tire Iron", 36m, 4, 3);
             var product5 = new Product("Adjustable Wrench", 40m, 5, 4);
 
-            inventoryList.AddProduct(1, product);
-            inventoryList.AddProduct(2, product2);
-            inventoryList.AddProduct(3, product3);
-            inventoryList.AddProduct(4, product4);
-            inventoryList.AddProduct(5, product5);
+            inventoryList.AddProduct(product);
+            inventoryList.AddProduct(product2);
+            inventoryList.AddProduct(product3);
+            inventoryList.AddProduct(product4);
+            inventoryList.AddProduct(product5);
 
             while (true)
             {
@@ -29,38 +31,144 @@ namespace Product_Inventory_Manager
                 Console.WriteLine("3. Product Inventory Report");
                 Console.WriteLine("4. Add New Product");
                 Console.WriteLine("5. Delete Product");
+                Console.WriteLine("6. Update Product Price");
+                Console.WriteLine("7. Exit");
                 var input = Console.ReadLine();
+
+                if (input == "7")
+                {
+                    Console.WriteLine("Exiting...");
+                    break;
+                }
 
                 switch (input)
                 {
                     case "1":
-                        Console.WriteLine("You have selected: Sell product.");
-                        Console.WriteLine("This is your current product inventory: ");
-                        foreach (var p in inventoryList)
-                        {
-                            Console.WriteLine(p);
-                        }
-                        Console.WriteLine("Which product would you like to sell?");
-                        var productId = Int32.Parse(Console.ReadLine());
-                        //var productQuantity = Int32.Parse(Console.ReadLine());
-                        Console.WriteLine("How many units would you like to sell?");
-                        var quantityToSell = Int32.Parse(Console.ReadLine());
-                        inventoryList.SellProductQuantity(productId, quantityToSell);
-                        Console.WriteLine($"Sold {quantityToSell} items of type {product.Name}.");
-                        Console.WriteLine($"Quantity of product with the id of {productId} is {inventoryList.UpdateProductQuantity(product.Quantity)}.");
+                        SellProduct();
                         break;
-                    //case "2":
-                    //    Console.WriteLine("You have selected: Stock Product.");
-
+                    case "2":
+                        StockProduct();
+                        break;
+                    case "3":
+                        ShowReport();
+                        break;
+                    case "4":
+                        AddNewProduct();
+                        break;
+                    case "5":
+                        DeleteProduct();
+                        break;
+                    case "6":
+                        UpdatePrice();
+                        break;
                     default:
                         break;
                 }
             }
+        }
 
+        public static Inventory _inventoryList = new Inventory();
+        public static Product _product = new Product();
 
+        public static void UpdatePrice()
+        {
+            Console.WriteLine("You have selected: Update Product Price.");
+            Console.WriteLine("This is your inventory: ");
+            foreach (var item in _inventoryList)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine("Select a product: ");
+            var productId = Int32.Parse(Console.ReadLine());
+            var product = _inventoryList.GetProduct(productId);
+            Console.WriteLine("Product selected.");
+            Console.WriteLine("You can update the product's price now.");
+            var newPrice = decimal.Parse(Console.ReadLine());
+            var updatedPrice = product.UpdatePrice(newPrice);
+            Console.WriteLine("Price Updated.");
+        }
 
+        public static void DeleteProduct()
+        {
+            Console.WriteLine("You have selected: Delete Product.");
+            Console.WriteLine("This is your inventory: ");
+            foreach (var item in _inventoryList)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine();
+            Console.WriteLine("Which product would you like to delete from inventory?");
+            var productId = Int32.Parse(Console.ReadLine());
+            //var product = _inventoryList.GetProduct(productId);
+            _inventoryList.RemoveProduct(productId);
+            Console.WriteLine($"Product {productId} removed from inventory.");
+        }
 
-            //Console.WriteLine($"Your product costs {product._price} dollars, it has the id of {product._id} and quantity of {product._quantityOnHand}.");
+        public static void AddNewProduct()
+        {
+            Console.WriteLine("You have selected: Add New Product.");
+            Console.WriteLine("This is your inventory: ");
+            foreach (var item in _inventoryList)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine("Please enter a product name: ");
+            _product.Name = Console.ReadLine();
+            Console.WriteLine("Please enter a product price: ");
+            _product.Price = decimal.Parse(Console.ReadLine());
+            Console.WriteLine("Please enter a product Id: ");
+            _product.Id = Int32.Parse(Console.ReadLine());
+            var product = new Product(_product.Name, _product.Price, _product.Id, _product.Quantity);
+            _inventoryList.AddProduct(product);
+            Console.WriteLine($"{product} added to Inventory.");
+        }
+
+        public static void ShowReport()
+        {
+            Console.WriteLine("You have selected: Product Inventory Report.");
+            Console.WriteLine("This is your current inventory: ");
+            foreach (var item in _inventoryList)
+            {
+                Console.WriteLine(item);
+                var productSumPerQuantity = item.Quantity * item.Price;
+                Console.WriteLine($"For product {item.Name} the total sum is {productSumPerQuantity} dollars.");
+                Console.WriteLine();
+            }
+
+        }
+
+        public static void StockProduct()
+        {
+            Console.WriteLine("You have selected: Stock Product.");
+            Console.WriteLine("This is your current product inventory: ");
+            foreach (var items in _inventoryList)
+            {
+                Console.WriteLine(items);
+            }
+            Console.WriteLine("Which product would you like to add stock to?");
+            var productid = Int32.Parse(Console.ReadLine());
+            var pr = _inventoryList.GetProduct(productid);
+            Console.WriteLine("How many units would you like to add?");
+            var stockAddAmount = Int32.Parse(Console.ReadLine());
+            pr.StockProduct(stockAddAmount);
+            Console.WriteLine($"Added {stockAddAmount} items to product of type {pr.Name}");
+        }
+
+        public static void SellProduct()
+        {
+            Console.WriteLine("You have selected: Sell product.");
+            Console.WriteLine("This is your current product inventory: ");
+            foreach (var p in _inventoryList)
+            {
+                Console.WriteLine(p);
+            }
+            Console.WriteLine("Which product would you like to sell?");
+            var productId = Int32.Parse(Console.ReadLine());
+            var prod = _inventoryList.GetProduct(productId);
+            Console.WriteLine("How many units would you like to sell?");
+            var quantityToSell = Int32.Parse(Console.ReadLine());
+            prod.SellProduct(quantityToSell);
+            Console.WriteLine($"Sold {quantityToSell} items of type {prod.Name}.");
         }
     }
 }

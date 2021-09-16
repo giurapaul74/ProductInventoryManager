@@ -7,18 +7,16 @@ namespace Product_Inventory_Manager
 {
     public class Inventory : IEnumerable<Product>
     {
-        private Product _product;
         private Dictionary<int, Product> InventoryList { get; set; }
 
         public Inventory()
         {
             InventoryList = new Dictionary<int, Product>();
-            _product = new Product();
         }
 
-        public void AddProduct(int id, Product product)
+        public void AddProduct(Product product)
         {
-            InventoryList.Add(id, product);
+            InventoryList.Add(product.Id, product);
         }
 
         public void RemoveProduct(int id)
@@ -26,19 +24,14 @@ namespace Product_Inventory_Manager
             InventoryList.Remove(id);
         }
 
-        public void SellProductQuantity(int productId, int amount)
-        {
-            _product.Quantity -= amount;
-        }
-
-        public int UpdateProductQuantity(int productId)
+        public Product GetProduct(int productId)
         {
             if (!InventoryList.TryGetValue(productId, out Product product))
             {
-                Console.WriteLine("Error. Product does not exist.");
+                throw new KeyNotFoundException("Product ID not found.");
             }
 
-            return InventoryList[productId].Quantity;
+            return product;
         }
 
         public IEnumerator<Product> GetEnumerator() => InventoryList.Select(c => c.Value).GetEnumerator();

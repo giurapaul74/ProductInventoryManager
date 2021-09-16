@@ -5,7 +5,7 @@
         public string Name { get; set; }
         public decimal Price { get; set; }
         public int Id { get; set; }
-        public int Quantity { get; set; }
+        public int Quantity { get; private set; }
 
         public Product()
         {
@@ -18,6 +18,21 @@
             Price = price;
             Id = id;
             Quantity = quantity;
+        }
+
+        public void SellProduct(int amount)
+        {
+            Quantity -= amount;
+        }
+
+        public void StockProduct(int amount)
+        {
+            Quantity += amount;
+        }
+
+        public decimal UpdatePrice(decimal newPrice)
+        {
+            return Price = newPrice;
         }
 
         public override string ToString()
