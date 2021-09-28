@@ -37,7 +37,7 @@
 
         public override string ToString()
         {
-            return $"Product {Id} : {Name} : {Price} dollars : {Quantity} item/s";
+            return $"| ID #{Id} | {Name} | {Price:C} | {Quantity} item/s |";
         }
     }
 }

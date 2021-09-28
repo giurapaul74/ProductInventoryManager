@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Product_Inventory_Manager
 {
@@ -9,17 +10,17 @@ namespace Product_Inventory_Manager
 
             var inventoryList = _inventoryList;
             //var prod = _product;
-            var product = new Product("Stool", 65m, 1, 2);
-            var product2 = new Product("Bench", 125m, 2, 3);
-            var product3 = new Product("Wrench", 30m, 3, 5);
-            var product4 = new Product("Tire Iron", 36m, 4, 3);
-            var product5 = new Product("Adjustable Wrench", 40m, 5, 4);
+            //var product = new Product("Stool", 65m, 1, 2);
+            //var product2 = new Product("Bench", 125m, 2, 3);
+            //var product3 = new Product("Wrench", 30m, 3, 5);
+            //var product4 = new Product("Tire Iron", 36m, 4, 3);
+            //var product5 = new Product("Adjustable Wrench", 40m, 5, 4);
 
-            inventoryList.AddProduct(product);
-            inventoryList.AddProduct(product2);
-            inventoryList.AddProduct(product3);
-            inventoryList.AddProduct(product4);
-            inventoryList.AddProduct(product5);
+            //inventoryList.AddProduct(product);
+            //inventoryList.AddProduct(product2);
+            //inventoryList.AddProduct(product3);
+            //inventoryList.AddProduct(product4);
+            //inventoryList.AddProduct(product5);
 
             while (true)
             {
@@ -79,7 +80,7 @@ namespace Product_Inventory_Manager
                 Console.WriteLine(item);
             }
             Console.WriteLine("Select a product: ");
-            var productId = Int32.Parse(Console.ReadLine());
+            var productId = int.Parse(Console.ReadLine());
             var product = _inventoryList.GetProduct(productId);
             Console.WriteLine("Product selected.");
             Console.WriteLine("You can update the product's price now.");
@@ -112,12 +113,12 @@ namespace Product_Inventory_Manager
             {
                 Console.WriteLine(item);
             }
-            Console.WriteLine("Please enter a product name: ");
-            _product.Name = Console.ReadLine();
-            Console.WriteLine("Please enter a product price: ");
-            _product.Price = decimal.Parse(Console.ReadLine());
-            Console.WriteLine("Please enter a product Id: ");
-            _product.Id = Int32.Parse(Console.ReadLine());
+            //Console.WriteLine("Please enter a product name: ");
+            //_product.Name = Console.ReadLine();
+            Prompt.ReadString("Enter product name:", value => _product.Name = value);
+            //Console.WriteLine("Please enter a product price: ");
+            Prompt.ReadDecimal("Enter a price:", value => _product.Price = value);
+            Prompt.ReadInt("Enter an Id:", value => _product.Id = value);
             var product = new Product(_product.Name, _product.Price, _product.Id, _product.Quantity);
             _inventoryList.AddProduct(product);
             Console.WriteLine($"{product} added to Inventory.");
@@ -126,15 +127,28 @@ namespace Product_Inventory_Manager
         public static void ShowReport()
         {
             Console.WriteLine("You have selected: Product Inventory Report.");
-            Console.WriteLine("This is your current inventory: ");
-            foreach (var item in _inventoryList)
+            Console.WriteLine();
+            decimal total = 0;
+            if (_inventoryList.InventoryList.Count == 0)
             {
-                Console.WriteLine(item);
-                var productSumPerQuantity = item.Quantity * item.Price;
-                Console.WriteLine($"For product {item.Name} the total sum is {productSumPerQuantity} dollars.");
+                Console.WriteLine("There are no products available for showing.");
                 Console.WriteLine();
             }
-
+            else
+            {
+                Console.WriteLine("This is your current inventory: ");
+                Console.WriteLine("| ID | Name              | Price   | Qty | Value     |");
+                Console.WriteLine("------------------------------------------------------");
+                foreach (var item in _inventoryList)
+                {
+                    var productSumPerQuantity = item.Quantity * item.Price;
+                    Console.WriteLine($"| {item.Id,-2} | {item.Name,-17} | {item.Price,7:C} | {item.Quantity,-3} | {productSumPerQuantity,9:C} |");
+                    total += productSumPerQuantity;
+                }
+                Console.WriteLine();
+                Console.WriteLine($"Total inventory: {total:C}");
+                Console.WriteLine();
+            }
         }
 
         public static void StockProduct()

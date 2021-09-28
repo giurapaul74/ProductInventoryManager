@@ -7,7 +7,7 @@ namespace Product_Inventory_Manager
 {
     public class Inventory : IEnumerable<Product>
     {
-        private Dictionary<int, Product> InventoryList { get; set; }
+        public Dictionary<int, Product> InventoryList { get; set; }
 
         public Inventory()
         {
