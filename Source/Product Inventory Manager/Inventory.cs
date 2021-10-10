@@ -16,22 +16,45 @@ namespace Product_Inventory_Manager
 
         public void AddProduct(Product product)
         {
-            InventoryList.Add(product.Id, product);
+            if (InventoryList.ContainsKey(product.Id))
+            {
+                Logger.LogMessage("Another product has this ID.");
+            }
+            else
+            {
+                InventoryList.Add(product.Id, product);
+                Logger.LogMessage($"{product} added to inventory.");
+            }
         }
 
         public void RemoveProduct(int id)
         {
-            InventoryList.Remove(id);
+            if (InventoryList.ContainsKey(id))
+            {
+                Logger.LogMessage("Cannot remove product. Id doesn't exist in inventory.");
+                return;
+            }
+            else
+            {
+                InventoryList.Remove(id);
+                Logger.LogMessage($"Successfully removed product {id} from inventory.");
+            }
         }
 
         public Product GetProduct(int productId)
         {
-            if (!InventoryList.TryGetValue(productId, out Product product))
+            try
             {
-                throw new KeyNotFoundException("Product ID not found.");
+                InventoryList.TryGetValue(productId, out Product product);
+                return product;
+            }   
+            catch (KeyNotFoundException ex)
+            {
+                Console.WriteLine("Product Id not found.", ex);
+                throw;
             }
 
-            return product;
+            
         }
 
         public IEnumerator<Product> GetEnumerator() => InventoryList.Select(c => c.Value).GetEnumerator();

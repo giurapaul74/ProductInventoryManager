@@ -22,17 +22,49 @@
 
         public void SellProduct(int amount)
         {
-            Quantity -= amount;
+            if (amount > Quantity)
+            {
+                Logger.LogMessage("Operation failed. Amount to sell greater than product quantity.");
+                return;
+            }
+            else if (Quantity == 0)
+            {
+                Logger.LogMessage("No sellable stock available for this product.");
+                return;
+            }
+            else
+            {
+                Quantity -= amount;
+                Logger.LogMessage($"Sold {amount} items of type {Name}.");
+            }
         }
 
         public void StockProduct(int amount)
         {
-            Quantity += amount;
+            if (amount <= 0)
+            {
+                Logger.LogMessage("Error. Cannot add negative or 0 values to product.");
+                return;
+            }
+            else
+            {
+                Quantity += amount;
+                Logger.LogMessage($"Added {amount} items to product {Name}.");
+            }
         }
 
         public decimal UpdatePrice(decimal newPrice)
         {
-            return Price = newPrice;
+            if (newPrice == 0)
+            {
+                Logger.LogMessage("Cannot set product price to 0. Try again.");
+                Logger.LogMessage("");
+            }
+            else
+            {
+                return Price = newPrice;
+            }
+            return newPrice;
         }
 
         public override string ToString()

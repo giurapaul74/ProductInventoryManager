@@ -75,64 +75,77 @@ namespace Product_Inventory_Manager
         {
             Console.WriteLine("You have selected: Update Product Price.");
             Console.WriteLine("This is your inventory: ");
-            foreach (var item in _inventoryList)
+            ShowReport();
+            try
             {
-                Console.WriteLine(item);
+                Console.WriteLine("Select a product: ");
+                var productId = int.Parse(Console.ReadLine());
+                var product = _inventoryList.GetProduct(productId);
+                Console.WriteLine("Product selected.");
+                Console.WriteLine("You can update the product's price now.");
+                var newPrice = decimal.Parse(Console.ReadLine());
+                var updatedPrice = product.UpdatePrice(newPrice);
             }
-            Console.WriteLine("Select a product: ");
-            var productId = int.Parse(Console.ReadLine());
-            var product = _inventoryList.GetProduct(productId);
-            Console.WriteLine("Product selected.");
-            Console.WriteLine("You can update the product's price now.");
-            var newPrice = decimal.Parse(Console.ReadLine());
-            var updatedPrice = product.UpdatePrice(newPrice);
-            Console.WriteLine("Price Updated.");
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine("Cannot update product price.", ex);
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Invalid decimal value.", ex);
+            }
         }
 
         public static void DeleteProduct()
         {
             Console.WriteLine("You have selected: Delete Product.");
             Console.WriteLine("This is your inventory: ");
-            foreach (var item in _inventoryList)
+            ShowReport();
+            try
             {
-                Console.WriteLine(item);
+                Console.WriteLine();
+                Console.WriteLine("Which product would you like to delete from inventory?");
+                var productId = Int32.Parse(Console.ReadLine());
+                _inventoryList.RemoveProduct(productId);
             }
-            Console.WriteLine();
-            Console.WriteLine("Which product would you like to delete from inventory?");
-            var productId = Int32.Parse(Console.ReadLine());
-            //var product = _inventoryList.GetProduct(productId);
-            _inventoryList.RemoveProduct(productId);
-            Console.WriteLine($"Product {productId} removed from inventory.");
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine("Cannot remove product.", ex);
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Invalid int value.", ex);
+            }
         }
 
         public static void AddNewProduct()
         {
             Console.WriteLine("You have selected: Add New Product.");
             Console.WriteLine("This is your inventory: ");
-            foreach (var item in _inventoryList)
+            ShowReport();
+            try
             {
-                Console.WriteLine(item);
+                Prompt.ReadString("Enter product name:", value => _product.Name = value);
+                Prompt.ReadDecimal("Enter a price:", value => _product.Price = value);
+                Prompt.ReadInt("Enter an Id:", value => _product.Id = value);
+                var product = new Product(_product.Name, _product.Price, _product.Id, _product.Quantity);
+                _inventoryList.AddProduct(product);
             }
-            //Console.WriteLine("Please enter a product name: ");
-            //_product.Name = Console.ReadLine();
-            Prompt.ReadString("Enter product name:", value => _product.Name = value);
-            //Console.WriteLine("Please enter a product price: ");
-            Prompt.ReadDecimal("Enter a price:", value => _product.Price = value);
-            Prompt.ReadInt("Enter an Id:", value => _product.Id = value);
-            var product = new Product(_product.Name, _product.Price, _product.Id, _product.Quantity);
-            _inventoryList.AddProduct(product);
-            Console.WriteLine($"{product} added to Inventory.");
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine("Cannot add Product.", ex);
+            }
         }
 
         public static void ShowReport()
         {
-            Console.WriteLine("You have selected: Product Inventory Report.");
             Console.WriteLine();
             decimal total = 0;
             if (_inventoryList.InventoryList.Count == 0)
             {
                 Console.WriteLine("There are no products available for showing.");
                 Console.WriteLine();
+                return;
             }
             else
             {
@@ -155,34 +168,54 @@ namespace Product_Inventory_Manager
         {
             Console.WriteLine("You have selected: Stock Product.");
             Console.WriteLine("This is your current product inventory: ");
-            foreach (var items in _inventoryList)
+            ShowReport();
+            if (_inventoryList.InventoryList.Count >= 1)
             {
-                Console.WriteLine(items);
+                try
+                {
+                    Console.WriteLine("Which product would you like to add stock to?");
+                    var productid = Int32.Parse(Console.ReadLine());
+                    var pr = _inventoryList.GetProduct(productid);
+                    Console.WriteLine("How many units would you like to add?");
+                    var stockAddAmount = Int32.Parse(Console.ReadLine());
+                    pr.StockProduct(stockAddAmount);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Console.WriteLine("Cannot add stock to product.", ex);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine("Invalid value. Enter an int instead.", ex);
+                }
             }
-            Console.WriteLine("Which product would you like to add stock to?");
-            var productid = Int32.Parse(Console.ReadLine());
-            var pr = _inventoryList.GetProduct(productid);
-            Console.WriteLine("How many units would you like to add?");
-            var stockAddAmount = Int32.Parse(Console.ReadLine());
-            pr.StockProduct(stockAddAmount);
-            Console.WriteLine($"Added {stockAddAmount} items to product of type {pr.Name}");
         }
 
         public static void SellProduct()
         {
             Console.WriteLine("You have selected: Sell product.");
             Console.WriteLine("This is your current product inventory: ");
-            foreach (var p in _inventoryList)
+            ShowReport();
+            if (_inventoryList.InventoryList.Count >= 1)
             {
-                Console.WriteLine(p);
+                try
+                {
+                    Console.WriteLine("Which product would you like to sell?");
+                    var productId = Int32.Parse(Console.ReadLine());
+                    var prod = _inventoryList.GetProduct(productId);
+                    Console.WriteLine("How many units would you like to sell?");
+                    var quantityToSell = Int32.Parse(Console.ReadLine());
+                    prod.SellProduct(quantityToSell);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Console.WriteLine("Operation failed.", ex);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine("Error. Enter an int value.", ex);
+                }
             }
-            Console.WriteLine("Which product would you like to sell?");
-            var productId = Int32.Parse(Console.ReadLine());
-            var prod = _inventoryList.GetProduct(productId);
-            Console.WriteLine("How many units would you like to sell?");
-            var quantityToSell = Int32.Parse(Console.ReadLine());
-            prod.SellProduct(quantityToSell);
-            Console.WriteLine($"Sold {quantityToSell} items of type {prod.Name}.");
         }
     }
 }
