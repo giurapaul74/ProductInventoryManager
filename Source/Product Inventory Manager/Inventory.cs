@@ -29,7 +29,7 @@ namespace Product_Inventory_Manager
 
         public void RemoveProduct(int id)
         {
-            if (InventoryList.ContainsKey(id))
+            if (!InventoryList.ContainsKey(id))
             {
                 Logger.LogMessage("Cannot remove product. Id doesn't exist in inventory.");
                 return;

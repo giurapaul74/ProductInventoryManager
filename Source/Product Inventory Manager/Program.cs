@@ -9,18 +9,6 @@ namespace Product_Inventory_Manager
         {
 
             var inventoryList = _inventoryList;
-            //var prod = _product;
-            //var product = new Product("Stool", 65m, 1, 2);
-            //var product2 = new Product("Bench", 125m, 2, 3);
-            //var product3 = new Product("Wrench", 30m, 3, 5);
-            //var product4 = new Product("Tire Iron", 36m, 4, 3);
-            //var product5 = new Product("Adjustable Wrench", 40m, 5, 4);
-
-            //inventoryList.AddProduct(product);
-            //inventoryList.AddProduct(product2);
-            //inventoryList.AddProduct(product3);
-            //inventoryList.AddProduct(product4);
-            //inventoryList.AddProduct(product5);
 
             while (true)
             {
