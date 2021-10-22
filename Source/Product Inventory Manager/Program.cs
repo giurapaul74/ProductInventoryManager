@@ -57,7 +57,7 @@ namespace Product_Inventory_Manager
         }
 
         public static Inventory _inventoryList = new Inventory();
-        public static Product _product = new Product();
+         public static Product _product = new();
 
         public static void UpdatePrice()
         {
@@ -72,7 +72,7 @@ namespace Product_Inventory_Manager
                 Console.WriteLine("Product selected.");
                 Console.WriteLine("You can update the product's price now.");
                 var newPrice = decimal.Parse(Console.ReadLine());
-                var updatedPrice = product.UpdatePrice(newPrice);
+                product.UpdatePrice(newPrice);
             }
             catch (NullReferenceException ex)
             {
@@ -81,6 +81,10 @@ namespace Product_Inventory_Manager
             catch (FormatException ex)
             {
                 Console.WriteLine("Invalid decimal value.", ex);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid value.", ex);
             }
         }
 
@@ -104,6 +108,10 @@ namespace Product_Inventory_Manager
             {
                 Console.WriteLine("Invalid int value.", ex);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid value.", ex);
+            }
         }
 
         public static void AddNewProduct()
@@ -122,6 +130,10 @@ namespace Product_Inventory_Manager
             catch (NullReferenceException ex)
             {
                 Console.WriteLine("Cannot add Product.", ex);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid operation.", ex);
             }
         }
 
@@ -176,6 +188,10 @@ namespace Product_Inventory_Manager
                 {
                     Console.WriteLine("Invalid value. Enter an int instead.", ex);
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Invalid value.", ex);
+                }
             }
         }
 
@@ -202,6 +218,10 @@ namespace Product_Inventory_Manager
                 catch (FormatException ex)
                 {
                     Console.WriteLine("Error. Enter an int value.", ex);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Invalid value.", ex);
                 }
             }
         }

@@ -53,7 +53,7 @@
             }
         }
 
-        public decimal UpdatePrice(decimal newPrice)
+        public void UpdatePrice(decimal newPrice)
         {
             if (newPrice == 0)
             {
@@ -62,9 +62,9 @@
             }
             else
             {
-                return Price = newPrice;
+                Price = newPrice;
+                Logger.LogMessage("Price Updated.");
             }
-            return newPrice;
         }
 
         public override string ToString()
