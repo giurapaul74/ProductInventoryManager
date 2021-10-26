@@ -32,6 +32,11 @@
                 Logger.LogMessage("No sellable stock available for this product.");
                 return;
             }
+            else if (amount <= 0)
+            {
+                Logger.LogMessage("Error. Cannot sell quantity lesser than or equal to 0.");
+                return;
+            }
             else
             {
                 Quantity -= amount;
@@ -55,9 +60,9 @@
 
         public void UpdatePrice(decimal newPrice)
         {
-            if (newPrice == 0)
+            if (newPrice <= 0)
             {
-                Logger.LogMessage("Cannot set product price to 0. Try again.");
+                Logger.LogMessage("Cannot set product price to 0 or lower*. Try again.");
                 Logger.LogMessage("");
             }
             else
