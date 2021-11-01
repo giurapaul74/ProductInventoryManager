@@ -23,7 +23,6 @@ namespace Product_Inventory_Manager
             else
             {
                 InventoryList.Add(product.Id, product);
-                Logger.LogMessage($"{product} added to inventory.");
             }
         }
 
@@ -31,13 +30,11 @@ namespace Product_Inventory_Manager
         {
             if (!InventoryList.ContainsKey(id))
             {
-                Logger.LogMessage("Cannot remove product. Id doesn't exist in inventory.");
-                return;
+                throw new ArgumentException("This product doesn't exist in inventory.");
             }
             else
             {
                 InventoryList.Remove(id);
-                Logger.LogMessage($"Successfully removed product {id} from inventory.");
             }
         }
 

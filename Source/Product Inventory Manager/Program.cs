@@ -128,6 +128,7 @@ namespace Product_Inventory_Manager
             {
                 Console.WriteLine(ex);
             }
+            Console.WriteLine($"{product} has been added to inventory.");
         }
 
         public static void ShowReport()
