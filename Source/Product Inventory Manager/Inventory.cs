@@ -18,7 +18,7 @@ namespace Product_Inventory_Manager
         {
             if (InventoryList.ContainsKey(product.Id))
             {
-                Logger.LogMessage("Another product has this ID.");
+                throw new ArgumentException("Another product with this ID already exists.");
             }
             else
             {
@@ -57,7 +57,7 @@ namespace Product_Inventory_Manager
             
         }
 
-        public IEnumerator<Product> GetEnumerator() => InventoryList.Select(c => c.Value).GetEnumerator();
+        public IEnumerator<Product> GetEnumerator() => InventoryList.Values.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {

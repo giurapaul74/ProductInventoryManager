@@ -5,10 +5,10 @@ namespace Product_Inventory_Manager
 {
     class Program
     {
+        private static Inventory _inventoryList = new Inventory();
+
         static void Main(string[] args)
         {
-
-            var inventoryList = _inventoryList;
 
             while (true)
             {
@@ -56,9 +56,6 @@ namespace Product_Inventory_Manager
             }
         }
 
-        public static Inventory _inventoryList = new Inventory();
-         public static Product _product = new();
-
         public static void UpdatePrice()
         {
             Console.WriteLine("You have selected: Update Product Price.");
@@ -73,10 +70,6 @@ namespace Product_Inventory_Manager
                 Console.WriteLine("You can update the product's price now.");
                 var newPrice = decimal.Parse(Console.ReadLine());
                 product.UpdatePrice(newPrice);
-            }
-            catch (NullReferenceException ex)
-            {
-                Console.WriteLine("Cannot update product price.", ex);
             }
             catch (FormatException ex)
             {
@@ -100,10 +93,6 @@ namespace Product_Inventory_Manager
                 var productId = Int32.Parse(Console.ReadLine());
                 _inventoryList.RemoveProduct(productId);
             }
-            catch (NullReferenceException ex)
-            {
-                Console.WriteLine("Cannot remove product.", ex);
-            }
             catch (FormatException ex)
             {
                 Console.WriteLine("Invalid int value.", ex);
@@ -119,21 +108,25 @@ namespace Product_Inventory_Manager
             Console.WriteLine("You have selected: Add New Product.");
             Console.WriteLine("This is your inventory: ");
             ShowReport();
+            var product = new Product();
+            Prompt.ReadString("Enter product name:", value => product.Name = value);
+            Prompt.ReadDecimal("Enter a price:", value => product.Price = value);
+            Prompt.ReadInt("Enter an Id:", value =>
+            {
+                if (_inventoryList.InventoryList.ContainsKey(value))
+                {
+                    throw new ArgumentException("A product with this ID already exists.");
+                }
+
+                product.Id = value;
+            });
             try
             {
-                Prompt.ReadString("Enter product name:", value => _product.Name = value);
-                Prompt.ReadDecimal("Enter a price:", value => _product.Price = value);
-                Prompt.ReadInt("Enter an Id:", value => _product.Id = value);
-                var product = new Product(_product.Name, _product.Price, _product.Id, _product.Quantity);
                 _inventoryList.AddProduct(product);
             }
-            catch (NullReferenceException ex)
+            catch (ArgumentException ex)
             {
-                Console.WriteLine("Cannot add Product.", ex);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Invalid operation.", ex);
+                Console.WriteLine(ex);
             }
         }
 
@@ -180,10 +173,6 @@ namespace Product_Inventory_Manager
                     var stockAddAmount = Int32.Parse(Console.ReadLine());
                     pr.StockProduct(stockAddAmount);
                 }
-                catch (NullReferenceException ex)
-                {
-                    Console.WriteLine("Cannot add stock to product.", ex);
-                }
                 catch (FormatException ex)
                 {
                     Console.WriteLine("Invalid value. Enter an int instead.", ex);
@@ -210,10 +199,6 @@ namespace Product_Inventory_Manager
                     Console.WriteLine("How many units would you like to sell?");
                     var quantityToSell = Int32.Parse(Console.ReadLine());
                     prod.SellProduct(quantityToSell);
-                }
-                catch (NullReferenceException ex)
-                {
-                    Console.WriteLine("Operation failed.", ex);
                 }
                 catch (FormatException ex)
                 {

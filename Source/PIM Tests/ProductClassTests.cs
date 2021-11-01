@@ -1,11 +1,19 @@
 using System;
 using Xunit;
 using Product_Inventory_Manager;
+using Xunit.Abstractions;
 
 namespace PIM_Tests
 {
     public class ProductClassTests
     {
+        private readonly ITestOutputHelper _output;
+
+        public ProductClassTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void UpdatePriceMethodCanChangeProductPrice()
         {
@@ -24,12 +32,13 @@ namespace PIM_Tests
         {
             //arrange
             var product = new Product("Item", 50, 1, 1);
+            var expected = product.Price;
 
             //act
-            product.UpdatePrice(100);
+            product.UpdatePrice(-10);
 
             //assert
-            Assert.Equal(100, product.Price);
+            Assert.Equal(expected, actual);
         }
     }
 }
