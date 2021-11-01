@@ -70,6 +70,7 @@ namespace Product_Inventory_Manager
                 Console.WriteLine("You can update the product's price now.");
                 var newPrice = decimal.Parse(Console.ReadLine());
                 product.UpdatePrice(newPrice);
+                Console.WriteLine("Product price updated successfully.");
             }
             catch (FormatException ex)
             {
@@ -92,6 +93,7 @@ namespace Product_Inventory_Manager
                 Console.WriteLine("Which product would you like to delete from inventory?");
                 var productId = Int32.Parse(Console.ReadLine());
                 _inventoryList.RemoveProduct(productId);
+                Console.WriteLine($"Successfully removed product {productId} from inventory.");
             }
             catch (FormatException ex)
             {
@@ -111,6 +113,8 @@ namespace Product_Inventory_Manager
             var product = new Product();
             Prompt.ReadString("Enter product name:", value => product.Name = value);
             Prompt.ReadDecimal("Enter a price:", value => product.Price = value);
+            try
+            {
             Prompt.ReadInt("Enter an Id:", value =>
             {
                 if (_inventoryList.InventoryList.ContainsKey(value))
@@ -120,15 +124,15 @@ namespace Product_Inventory_Manager
 
                 product.Id = value;
             });
-            try
-            {
+
                 _inventoryList.AddProduct(product);
+                Console.WriteLine($"{product} has been added to inventory.");
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Failed to add product to inventory.", ex);
             }
-            Console.WriteLine($"{product} has been added to inventory.");
+            
         }
 
         public static void ShowReport()
@@ -173,6 +177,7 @@ namespace Product_Inventory_Manager
                     Console.WriteLine("How many units would you like to add?");
                     var stockAddAmount = Int32.Parse(Console.ReadLine());
                     pr.StockProduct(stockAddAmount);
+                    Console.WriteLine($"Successfully added stock to {pr}.");
                 }
                 catch (FormatException ex)
                 {
@@ -200,6 +205,7 @@ namespace Product_Inventory_Manager
                     Console.WriteLine("How many units would you like to sell?");
                     var quantityToSell = Int32.Parse(Console.ReadLine());
                     prod.SellProduct(quantityToSell);
+                    Console.WriteLine($"Successfully sold {quantityToSell} unit/s of {prod}.");
                 }
                 catch (FormatException ex)
                 {

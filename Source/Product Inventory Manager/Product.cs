@@ -1,4 +1,6 @@
-﻿namespace Product_Inventory_Manager
+﻿using System;
+
+namespace Product_Inventory_Manager
 {
     public class Product
     {
@@ -24,23 +26,19 @@
         {
             if (amount > Quantity)
             {
-                Logger.LogMessage("Operation failed. Amount to sell greater than product quantity.");
-                return;
+                throw new ArgumentException("Can't sell amount greater than product quantity.");
             }
             else if (Quantity == 0)
             {
-                Logger.LogMessage("No sellable stock available for this product.");
-                return;
+                throw new ArgumentException("No sellable stock available.");
             }
             else if (amount <= 0)
             {
-                Logger.LogMessage("Error. Cannot sell quantity lesser than or equal to 0.");
-                return;
+                throw new ArgumentException("Can't sell 0 or less than product quantity.");
             }
             else
             {
                 Quantity -= amount;
-                Logger.LogMessage($"Sold {amount} items of type {Name}.");
             }
         }
 
@@ -48,13 +46,11 @@
         {
             if (amount <= 0)
             {
-                Logger.LogMessage("Error. Cannot add negative or 0 values to product.");
-                return;
+                throw new ArgumentException("Can't add negative or 0 values to product.");
             }
             else
             {
                 Quantity += amount;
-                Logger.LogMessage($"Added {amount} items to product {Name}.");
             }
         }
 
@@ -62,13 +58,11 @@
         {
             if (newPrice <= 0)
             {
-                Logger.LogMessage("Cannot set product price to 0 or lower*. Try again.");
-                Logger.LogMessage("");
+                throw new ArgumentException("Can't set product price to 0 or lower.");
             }
             else
             {
                 Price = newPrice;
-                Logger.LogMessage("Price Updated.");
             }
         }
 

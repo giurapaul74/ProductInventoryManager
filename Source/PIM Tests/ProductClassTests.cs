@@ -35,10 +35,10 @@ namespace PIM_Tests
             var expected = product.Price;
 
             //act
-            product.UpdatePrice(-10);
+            var exception = Assert.Throws<ArgumentException>(() => product.UpdatePrice(-10));
 
             //assert
-            Assert.Equal(expected, actual);
+            _output.Equals(exception);
         }
     }
 }
