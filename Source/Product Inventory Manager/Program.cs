@@ -21,10 +21,11 @@ namespace Product_Inventory_Manager
                 Console.WriteLine("4. Add New Product");
                 Console.WriteLine("5. Delete Product");
                 Console.WriteLine("6. Update Product Price");
-                Console.WriteLine("7. Exit");
+                Console.WriteLine("7. Clear Product Inventory");
+                Console.WriteLine("8. Exit.");
                 var input = Console.ReadLine();
 
-                if (input == "7")
+                if (input == "8")
                 {
                     Console.WriteLine("Exiting...");
                     break;
@@ -49,6 +50,9 @@ namespace Product_Inventory_Manager
                         break;
                     case "6":
                         UpdatePrice();
+                        break;
+                    case "7":
+                        ClearProductInventory();
                         break;
                     default:
                         break;
@@ -113,8 +117,6 @@ namespace Product_Inventory_Manager
             var product = new Product();
             Prompt.ReadString("Enter product name:", value => product.Name = value);
             Prompt.ReadDecimal("Enter a price:", value => product.Price = value);
-            try
-            {
             Prompt.ReadInt("Enter an Id:", value =>
             {
                 if (_inventoryList.InventoryList.ContainsKey(value))
@@ -124,7 +126,8 @@ namespace Product_Inventory_Manager
 
                 product.Id = value;
             });
-
+            try
+            {
                 _inventoryList.AddProduct(product);
                 Console.WriteLine($"{product} has been added to inventory.");
             }
@@ -132,7 +135,7 @@ namespace Product_Inventory_Manager
             {
                 Console.WriteLine("Failed to add product to inventory.", ex);
             }
-            
+
         }
 
         public static void ShowReport()
@@ -215,6 +218,30 @@ namespace Product_Inventory_Manager
                 {
                     Console.WriteLine("Invalid value.", ex);
                 }
+            }
+        }
+
+        public static void ClearProductInventory()
+        {
+            Console.WriteLine("You have selected: Clear Product Inventory.");
+            Console.WriteLine("This is your inventory.");
+            ShowReport();
+            var result = Prompt.ReadBool("Would you like to clear your inventory");
+
+            if (result)
+            {
+                if (_inventoryList.InventoryList.Count == 0)
+                {
+                    Console.WriteLine("Your inventory is already empty. Cannot clear empty inventory.");
+                    return;
+                }
+
+                _inventoryList.DeleteInventory();
+                Console.WriteLine("Inventory cleared successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Operation cancelled.");
             }
         }
     }

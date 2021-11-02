@@ -44,14 +44,17 @@ namespace Product_Inventory_Manager
             {
                 InventoryList.TryGetValue(productId, out Product product);
                 return product;
-            }   
+            }
             catch (KeyNotFoundException ex)
             {
                 Console.WriteLine("Product Id not found.", ex);
                 throw;
             }
+        }
 
-            
+        public void DeleteInventory()
+        {
+            InventoryList.Clear();
         }
 
         public IEnumerator<Product> GetEnumerator() => InventoryList.Values.GetEnumerator();

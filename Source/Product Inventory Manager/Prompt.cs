@@ -36,7 +36,7 @@ namespace Product_Inventory_Manager
                         setValueAction(result);
                         return;
                     }
-                    catch (FormatException ex)
+                    catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -64,7 +64,7 @@ namespace Product_Inventory_Manager
                         setValueAction(input);
                         return;
                     }
-                    catch (ArgumentException ex)
+                    catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -92,14 +92,14 @@ namespace Product_Inventory_Manager
                         setvalueAction(result);
                         return;
                     }
-                    catch (FormatException ex)
+                    catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid int value.");
+                    Console.WriteLine("Invalid number.");
                 }
             }
         }
