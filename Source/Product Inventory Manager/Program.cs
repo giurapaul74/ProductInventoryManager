@@ -67,21 +67,29 @@ namespace Product_Inventory_Manager
             ShowReport();
             try
             {
-                Console.WriteLine("Select a product: ");
-                var productId = int.Parse(Console.ReadLine());
-                var product = _inventoryList.GetProduct(productId);
-                Console.WriteLine("Product selected.");
-                Console.WriteLine("You can update the product's price now.");
-                var newPrice = decimal.Parse(Console.ReadLine());
-                var result = Prompt.ReadBool($"Would you like to set the product's price to {newPrice}");
-                if (result)
+                if (_inventoryList.InventoryList.Count == 0)
                 {
-                    product.UpdatePrice(newPrice);
-                    Console.WriteLine("Product price updated successfully.");
+                    Console.WriteLine("No product available.");
                 }
                 else
                 {
-                    Console.WriteLine("Cancelling...");
+                    Console.WriteLine("Select a product: ");
+                    var productId = int.Parse(Console.ReadLine());
+                    var product = _inventoryList.GetProduct(productId);
+                    Console.WriteLine("Product selected.");
+                    Console.WriteLine("You can update the product's price now.");
+                    var newPrice = decimal.Parse(Console.ReadLine());
+                    var result = Prompt.ReadBool($"Would you like to set the product's price to {newPrice}");
+                    if (result)
+                    {
+                        product.UpdatePrice(newPrice);
+                        Console.WriteLine("Product price updated successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Cancelling...");
+                    }
+
                 }
             }
             catch (FormatException ex)
