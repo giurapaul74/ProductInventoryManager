@@ -73,8 +73,16 @@ namespace Product_Inventory_Manager
                 Console.WriteLine("Product selected.");
                 Console.WriteLine("You can update the product's price now.");
                 var newPrice = decimal.Parse(Console.ReadLine());
-                product.UpdatePrice(newPrice);
-                Console.WriteLine("Product price updated successfully.");
+                var result = Prompt.ReadBool($"Would you like to set the product's price to {newPrice}");
+                if (result)
+                {
+                    product.UpdatePrice(newPrice);
+                    Console.WriteLine("Product price updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Cancelling...");
+                }
             }
             catch (FormatException ex)
             {
@@ -96,8 +104,16 @@ namespace Product_Inventory_Manager
                 Console.WriteLine();
                 Console.WriteLine("Which product would you like to delete from inventory?");
                 var productId = Int32.Parse(Console.ReadLine());
-                _inventoryList.RemoveProduct(productId);
-                Console.WriteLine($"Successfully removed product {productId} from inventory.");
+                var result = Prompt.ReadBool("Would you like to remove the selected product");
+                if (result)
+                {
+                    _inventoryList.RemoveProduct(productId);
+                    Console.WriteLine($"Successfully removed product {productId} from inventory.");
+                }
+                else
+                {
+                    Console.WriteLine("Cancelling...");
+                }
             }
             catch (FormatException ex)
             {
@@ -128,8 +144,16 @@ namespace Product_Inventory_Manager
             });
             try
             {
-                _inventoryList.AddProduct(product);
-                Console.WriteLine($"{product} has been added to inventory.");
+                var result = Prompt.ReadBool($"Would you like to add {product} to the inventory");
+                if (result)
+                {
+                    _inventoryList.AddProduct(product);
+                    Console.WriteLine($"{product} has been added to inventory.");
+                }
+                else
+                {
+                    Console.WriteLine("Cancelling...");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -179,8 +203,16 @@ namespace Product_Inventory_Manager
                     var pr = _inventoryList.GetProduct(productid);
                     Console.WriteLine("How many units would you like to add?");
                     var stockAddAmount = Int32.Parse(Console.ReadLine());
-                    pr.StockProduct(stockAddAmount);
-                    Console.WriteLine($"Successfully added stock to {pr}.");
+                    var result = Prompt.ReadBool($"Would you like to add {stockAddAmount} to the selected product");
+                    if (result)
+                    {
+                        pr.StockProduct(stockAddAmount);
+                        Console.WriteLine($"Successfully added stock to {pr}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Cancelling...");
+                    }
                 }
                 catch (FormatException ex)
                 {
@@ -207,8 +239,16 @@ namespace Product_Inventory_Manager
                     var prod = _inventoryList.GetProduct(productId);
                     Console.WriteLine("How many units would you like to sell?");
                     var quantityToSell = Int32.Parse(Console.ReadLine());
-                    prod.SellProduct(quantityToSell);
-                    Console.WriteLine($"Successfully sold {quantityToSell} unit/s of {prod}.");
+                    var result = Prompt.ReadBool($"Would you like to sell {quantityToSell} unit/s of type {prod}");
+                    if (result)
+                    {
+                        prod.SellProduct(quantityToSell);
+                        Console.WriteLine($"Successfully sold {quantityToSell} unit/s of {prod}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Cancelling...");
+                    }
                 }
                 catch (FormatException ex)
                 {
@@ -241,7 +281,7 @@ namespace Product_Inventory_Manager
             }
             else
             {
-                Console.WriteLine("Operation cancelled.");
+                Console.WriteLine("Cancelling...");
             }
         }
     }
